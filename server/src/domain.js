@@ -310,7 +310,17 @@ export function checklistView(checklist, documents = [], now = new Date()) {
       (i) => i.documentCount > 0 || i.state === "waived",
     ).length,
     totalItems: required.length,
-    needsReview: items.some((i) => i.state === "under_review"),
+    needsReview: items.some(
+      (i) => i.state === "under_review" || (i.naNote && !i.waivedAt),
+    ),
+    waitingOnClient: required.some(
+      (i) =>
+        !i.waivedAt &&
+        !i.naNote &&
+        (i.documentCount === 0 ||
+          i.state === "rejected" ||
+          (i.multiple && !i.submittedAt)),
+    ),
   };
 }
 export function reminderSlot(dueDate, now = new Date()) {

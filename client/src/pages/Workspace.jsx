@@ -59,7 +59,11 @@ export function ShareDialog({ share, onClose }) {
       toast(
         data.log?.status === "sent"
           ? "Email reminder sent."
-          : data.log?.error || "A reminder was already requested.",
+          : data.reason === "waiting_on_review"
+            ? "Your client has finished responding. Review the request before following up."
+            : data.reason === "complete"
+              ? "This request is already complete."
+              : data.log?.error || "A reminder was already requested.",
         data.log?.status === "sent" ? "success" : "error",
       );
     } catch (e) {

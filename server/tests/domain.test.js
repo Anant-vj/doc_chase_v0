@@ -178,3 +178,29 @@ test("extraction confidence has a bounded documented signal formula", () => {
   assert.equal(confidenceScore({ a: 0.5, b: 1 }), 0.6);
   assert.equal(confidenceScore({}), 0);
 });
+
+test("a client who finished uploading is not chased while waiting for staff review", () => {
+  const checklist = {
+    dueDate: "2026-12-01",
+    items: [
+      { _id: "i", required: true, multiple: true, submittedAt: new Date() },
+    ],
+  };
+  const view = checklistView(checklist, [
+    { itemId: "i", status: "needs_review" },
+  ]);
+  assert.equal(view.status, "open");
+  assert.equal(view.needsReview, true);
+  assert.equal(view.waitingOnClient, false);
+  checklist.items[0].submittedAt = null;
+  assert.equal(
+    checklistView(checklist, [{ itemId: "i", status: "approved" }])
+      .waitingOnClient,
+    true,
+  );
+  checklist.items[0].naNote = "No invoices this month";
+  const response = checklistView(checklist);
+  assert.equal(response.waitingOnClient, false);
+  assert.equal(response.needsReview, true);
+  assert.equal(response.status, "open");
+});

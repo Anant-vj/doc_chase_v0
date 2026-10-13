@@ -239,15 +239,25 @@ export function portalRoutes(storage, config) {
                 "A replacement for this file was already uploaded.",
               );
           }
-          await Checklist.updateOne(
+          const changed = await Checklist.updateOne(
             {
               _id: checklist._id,
               firmId: req.link.firmId,
+              version: checklist.version,
               "items._id": item._id,
             },
-            { $unset: { "items.$.submittedAt": 1, "items.$.naNote": 1 } },
+            {
+              $unset: { "items.$.submittedAt": 1, "items.$.naNote": 1 },
+              $inc: { version: 1 },
+            },
             { session },
           );
+          if (!changed.modifiedCount)
+            throw new AppError(
+              409,
+              "CONFLICT",
+              "This request changed during upload. Please retry your file.",
+            );
           await Job.create(
             [
               {

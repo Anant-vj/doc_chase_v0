@@ -42,7 +42,7 @@ export const initials = (name) =>
     .join("")
     .toUpperCase();
 export const labels = {
-  open: "Waiting on client",
+  open: "In progress",
   overdue: "Overdue",
   complete: "Complete",
   extracted_clean: "Ready to approve",

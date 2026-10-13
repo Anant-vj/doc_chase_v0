@@ -542,11 +542,17 @@ export function firmRoutes(config, storage, runner, reminders) {
     if (!doc) throw missing();
     assertTransition(doc.status, "queued");
     await mongoose.connection.transaction(async (session) => {
-      await Document.updateOne(
+      const changed = await Document.updateOne(
         { _id: doc._id, firmId: req.user.firmId, version: doc.version },
         { $set: { status: "queued" }, $inc: { version: 1 } },
         { session },
       );
+      if (!changed.modifiedCount)
+        throw new AppError(
+          409,
+          "CONFLICT",
+          "This document changed before the retry. Reload it and try again.",
+        );
       await Job.updateOne(
         { key: `extract:${doc._id}:${doc.sha256}`, firmId: req.user.firmId },
         { $set: { status: "pending", attempts: 0, runAt: new Date() } },
@@ -633,8 +639,8 @@ export function firmRoutes(config, storage, runner, reminders) {
       ),
     });
   });
-  router.post("/jobs/tick", ownerOnly, async (_req, res) =>
-    res.json(await runner.tick()),
+  router.post("/jobs/tick", ownerOnly, async (req, res) =>
+    res.json(await runner.tick(4, req.user.firmId)),
   );
   return router;
 }

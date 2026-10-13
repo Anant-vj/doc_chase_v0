@@ -3184,3 +3184,11 @@ strong {
 .validation-errors button > svg {
   margin-left: auto;
 }
+@media (max-width: 760px) {
+  .portal-item-heading > div {
+    flex-basis: calc(100% - 60px);
+  }
+  .portal-item-heading > .badge {
+    margin-left: 49px;
+  }
+}

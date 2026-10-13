@@ -130,6 +130,26 @@ test("mobile portal permits a scoped private upload and blocks corrupt or duplic
   await request(app)
     .post(`/api/portal/${token}/items/${list.items[0]._id}/upload`)
     .set("X-DocChase", "1")
+    .attach(
+      "file",
+      Buffer.from([
+        0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46, 0, 0, 0, 0,
+        0, 0,
+      ]),
+      { filename: "damaged.jpg", contentType: "image/jpeg" },
+    )
+    .expect(400);
+  await request(app)
+    .post(`/api/portal/${token}/items/${list.items[0]._id}/upload`)
+    .set("X-DocChase", "1")
+    .attach("file", Buffer.alloc(10 * 1024 * 1024 + 1), {
+      filename: "oversized.pdf",
+      contentType: "application/pdf",
+    })
+    .expect(413);
+  await request(app)
+    .post(`/api/portal/${token}/items/${list.items[0]._id}/upload`)
+    .set("X-DocChase", "1")
     .attach("file", Buffer.from("not a PDF"), {
       filename: "fake.pdf",
       contentType: "application/pdf",
@@ -446,4 +466,16 @@ test("provider failures retry durably three times and leave a manual-entry optio
   assert.equal(calls, 3);
   assert.equal((await Job.findById(job._id)).status, "failed");
   assert.equal((await Document.findById(document._id)).status, "failed");
+});
+
+test("owner-triggered processing never claims another firm job", async () => {
+  const { document } = await queuedDocument("Scoped Queue Client", fixtures[3]);
+  const foreign = (await post(second, "/api/jobs/tick", {}).expect(200)).body;
+  assert.equal(foreign.processed, 0);
+  assert.equal((await Document.findById(document._id)).status, "queued");
+  await post(first, "/api/jobs/tick", {}).expect(200);
+  assert.equal(
+    (await Document.findById(document._id)).status,
+    "extracted_clean",
+  );
 });

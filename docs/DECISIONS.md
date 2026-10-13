@@ -29,3 +29,9 @@ Reminder uniqueness claims a database slot, not exactly-once provider delivery. 
 
 ## 010 — Summaries and cache for growth
 Overview progress uses grouped MongoDB status counts instead of a truncated list of full documents. The review worklist uses projections. Extraction caching is firm-scoped and model-scoped, and preserves the original source fields separately from reviewed edits. This avoids repeating provider calls or reusing human edits as OCR data.
+
+## 011 — Follow up only when the client has work to do
+Stop document-chasing reminders when required items are submitted or the client has left a note awaiting staff review. Approval still determines final request completion. A rejection or an unfinished multiple-file item requires a client response again. This avoids chasing clients for a review delay inside the firm.
+
+## 012 — Persistent local replica address
+Store the local development replica-set port in ignored metadata. Recover an existing port from replica configuration without changing application collections. Reuse that address on restart, because stored replica membership cannot follow randomly chosen ports. Wait for API readiness before launching the frontend; redact capability tokens from development proxy errors.

@@ -14,7 +14,7 @@ Researched 13 October 2026. Provider limits can change; verify the dashboard bef
 - Koyeb Free: one Node web service serves the SPA and API.
 - [MongoDB Atlas Free](https://www.mongodb.com/docs/atlas/reference/free-shared-limitations/): application data and jobs, using a replica set for transactions.
 - [Supabase Free](https://supabase.com/pricing): a private storage bucket; currently 1 GB storage and 5 GB uncached egress. Free projects may pause after one week of inactivity; limits apply to the whole project.
-- Brevo Free: optional HTTPS transactional email, with verified sender. Confirm current quotas in your account before enabling.
+- [Brevo Free](https://help.brevo.com/hc/en-us/articles/208589409-About-Brevo-s-pricing-plans): optional HTTPS transactional email, with verified sender; currently 300 emails per day. Confirm current quotas in your account before enabling.
 - [cron-job.org](https://cron-job.org/en/faq/): a real scheduled request every 15 minutes with a custom secret header. This endpoint dispatches work, rather than serving as a fake keep-alive.
 
 ## Setup

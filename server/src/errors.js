@@ -63,6 +63,10 @@ export function errorHandler(err, req, res, _next) {
     status = 413;
     code = "FILE_TOO_LARGE";
     message = "Choose a file smaller than 10 MB.";
+  } else if (err.name === "MulterError") {
+    status = 400;
+    code = "INVALID_UPLOAD";
+    message = "Send one file per upload with the expected file field.";
   }
   if (err.name === "CastError") {
     status = 404;

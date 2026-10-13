@@ -41,8 +41,12 @@ export function createReminders(config) {
       checklistId: checklist._id,
       firmId: checklist.firmId,
     });
-    if (checklistView(checklist, docs).status === "complete")
-      return { skipped: true };
+    const view = checklistView(checklist, docs);
+    if (view.status === "complete" || !view.waitingOnClient)
+      return {
+        skipped: true,
+        reason: view.status === "complete" ? "complete" : "waiting_on_review",
+      };
     if (!client.email)
       throw new AppError(
         400,

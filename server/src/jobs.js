@@ -141,19 +141,27 @@ export function createJobRunner(config, storage, extractor) {
       },
     );
   }
-  async function tick(maxJobs = 4) {
+  async function tick(maxJobs = 4, firmId) {
     if (ticking) return { busy: true };
     ticking = true;
     let processed = 0;
     try {
       const stale = new Date(Date.now() - 10 * 60000);
       await Job.updateMany(
-        { status: "running", lockedAt: { $lt: stale } },
+        {
+          status: "running",
+          lockedAt: { $lt: stale },
+          ...(firmId ? { firmId } : {}),
+        },
         { $set: { status: "pending", runAt: new Date() } },
       );
       for (let i = 0; i < maxJobs; i++) {
         const job = await Job.findOneAndUpdate(
-          { status: "pending", runAt: { $lte: new Date() } },
+          {
+            status: "pending",
+            runAt: { $lte: new Date() },
+            ...(firmId ? { firmId } : {}),
+          },
           {
             $set: { status: "running", lockedAt: new Date() },
             $inc: { attempts: 1 },

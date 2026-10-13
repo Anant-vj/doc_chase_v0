@@ -5,9 +5,9 @@
 - [ ] Core workflows actually work: local automated checks pass; confirm deployed browser path.
 - [x] Meaningful engineering logic: validation, lifecycle, transactions, token scope, reminder slots.
 - [ ] Important failures handled: tested core failure paths; complete deployed provider checks.
-- [ ] No secrets exposed: placeholders only; CI gitleaks prepared; verify scan and full history before publishing.
+- [x] No secrets exposed: placeholders only; redacted Gitleaks scan passed and staged scanning enabled.
 - [ ] Source code accessible: local Git exists; public repository still required.
-- [ ] Git history demonstrates development: preserve incremental commits; final review needed.
+- [x] Git history demonstrates development: scope, tooling, persistence, uploads, extraction, review, UI, documentation and hardening have separate commits.
 - [x] README explains project: README.md.
 - [x] Architecture documented: ARCHITECTURE.md and DECISIONS.md.
 - [ ] Application deployed/easily runnable: local dev runs; final hosted verification pending.
