@@ -27,6 +27,8 @@ MERN is our choice; the university permits any suitable stack.
 A modular Express application serves the React production build. MongoDB persists firm-scoped data and a leased background queue. Storage, extraction and mail have local and hosted paths. The same worker can run in the web process or separately. See [architecture](docs/ARCHITECTURE.md) and [decisions](docs/DECISIONS.md).
 
 ## Local setup
+For step-by-step Windows instructions, demo access, sample uploads and troubleshooting, see **[RUN_LOCALLY.md](RUN_LOCALLY.md)**.
+
 Install Node **24.x**, then run:
 ```powershell
 npm ci

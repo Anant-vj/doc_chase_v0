@@ -28,3 +28,8 @@
 - Final expanded gate: 26 unit/integration tests, lint and production build passed. Damaged images and oversized uploads are covered, as are optimistic review conflicts, tenant-scoped manual job processing, extraction cache, exhausted retries and quiet-hour slots.
 - Gitleaks scanned committed history with redaction and reported no leaks; staged scanning is enabled through .githooks.
 - Remaining human/account steps: create/connect free Koyeb, Atlas and private storage, configure optional real Gemini/email and scheduled trigger, publish the repository, verify the hosted app, record the demo and submit the form. No paid resources or real client data were used.
+
+## Local run guide
+- Added RUN_LOCALLY.md at the user's request and linked it from the README.
+- Documented Windows setup, automatic local MongoDB startup, demo credentials, sample invoices, no-key behavior, persistent data, restart steps and common troubleshooting.
+- Checked the instructions against the package scripts, development launcher, sample generator and Vite configuration. This is a documentation-only change.
