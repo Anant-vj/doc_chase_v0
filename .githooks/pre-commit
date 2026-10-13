@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --redact=100 --no-banner
+elif [ -f .cache/gitleaks/gitleaks.exe ]; then
+  .cache/gitleaks/gitleaks.exe git --pre-commit --staged --redact=100 --no-banner
+else
+  printf '%s\n' 'Install Gitleaks before committing. See README Testing; secrets must never enter Git.' >&2
+  exit 1
+fi
