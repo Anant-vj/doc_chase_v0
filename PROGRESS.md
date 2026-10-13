@@ -33,3 +33,10 @@
 - Added RUN_LOCALLY.md at the user's request and linked it from the README.
 - Documented Windows setup, automatic local MongoDB startup, demo credentials, sample invoices, no-key behavior, persistent data, restart steps and common troubleshooting.
 - Checked the instructions against the package scripts, development launcher, sample generator and Vite configuration. This is a documentation-only change.
+
+## Clean-install startup repair
+- The user reported a successful npm ci followed by ERR_MODULE_NOT_FOUND for mongoose/index.js during npm run dev. The deprecation notices in the install output were warnings, not the failure.
+- A fresh clean install restored the missing Mongoose entry file. Also declared the root launcher's exact Mongoose version directly in the root devDependencies instead of relying on the server workspace's dependency being hoisted.
+- Updated the Windows guide to use npm.cmd, explain successful installation output, stop development before reinstalling, and recover missing dependencies without deleting .local.
+- Verified another clean npm.cmd ci, the documented Mongoose import check, lint, all 26 tests and the production build. The exact npm.cmd run dev command started successfully; frontend, API readiness, demo login and dashboard requests all returned HTTP 200.
+- Stopped the verification run and confirmed ports 3001 and 5173 were available so the user can start the app from their own terminal. Existing development data was retained.

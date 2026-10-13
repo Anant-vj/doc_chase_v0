@@ -35,3 +35,6 @@ Stop document-chasing reminders when required items are submitted or the client 
 
 ## 012 — Persistent local replica address
 Store the local development replica-set port in ignored metadata. Recover an existing port from replica configuration without changing application collections. Reuse that address on restart, because stored replica membership cannot follow randomly chosen ports. Wait for API readiness before launching the frontend; redact capability tokens from development proxy errors.
+
+## 013 — Declare the launcher's dependencies directly
+The root development launcher imports Mongoose, so the root package must declare the same pinned version as a development dependency. The server retains its runtime dependency. Do not rely on workspace hoisting to make an undeclared root import available. Verify local setup after a clean `npm ci`, and document warnings separately from failures and missing-package recovery without deleting application data.

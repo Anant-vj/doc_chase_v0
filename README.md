@@ -29,11 +29,13 @@ A modular Express application serves the React production build. MongoDB persist
 ## Local setup
 For step-by-step Windows instructions, demo access, sample uploads and troubleshooting, see **[RUN_LOCALLY.md](RUN_LOCALLY.md)**.
 
-Install Node **24.x**, then run:
+Install Node **24.x**, then run from the project root in Windows PowerShell:
 ```powershell
-npm ci
-npm run dev
+npm.cmd ci
+npm.cmd run dev
 ```
+On macOS/Linux, use `npm` in place of `npm.cmd`. Stop an existing development run before reinstalling dependencies, and wait for installation to finish before starting the app.
+
 Open **http://localhost:5173**. The first run downloads an official MongoDB runtime into `.cache/mongodb-binaries`; on Windows, the helper retrieves and checks only the executable, avoiding unused debug symbols. It starts a local single-member replica set with disk-backed data in `.local/mongo`, seeds fictional clients and starts both servers. No external accounts or API keys are needed. Restart the development command after backend changes.
 
 Stop with Ctrl+C. Normal restarts retain the local data. Keep `.local` and `.cache` out of Git. A local replica set is required for atomic review/audit and upload/job transactions.

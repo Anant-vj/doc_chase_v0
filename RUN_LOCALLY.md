@@ -8,7 +8,7 @@ Install **Node.js 24.x**, then open a new PowerShell terminal and check:
 
 ```powershell
 node --version
-npm --version
+npm.cmd --version
 ```
 
 The Node version should begin with `v24.`. Use the commands below from the **project root**, which contains `package.json`.
@@ -17,15 +17,19 @@ The Node version should begin with `v24.`. Use the commands below from the **pro
 
 ```powershell
 Set-Location -LiteralPath 'C:\Users\anant\Desktop\SST\Year 2\Term 5\mern_end_poject'
-npm ci
+npm.cmd ci
 ```
 
-Run this on your first setup, or after pulling changes to `package-lock.json`. You do not need to reinstall dependencies every time you start the app.
+Run this on your first setup, or after pulling changes to `package-lock.json`. Stop any existing development run with Ctrl+C before reinstalling dependencies. Wait until installation finishes and the PowerShell prompt returns.
+
+Messages beginning with `npm warn deprecated`, funding notices, and `found 0 vulnerabilities` do not mean installation failed. A successful installation reports the packages added and returns without `npm error` lines. You do not need to reinstall dependencies every time you start the app.
+
+The Windows commands here use `npm.cmd`, which works in PowerShell without depending on permission to run `npm.ps1`. If plain `npm` already works for you, it runs the same package manager.
 
 ## 3. Start the app
 
 ```powershell
-npm run dev
+npm.cmd run dev
 ```
 
 Leave this terminal open. The command starts:
@@ -63,7 +67,7 @@ These are intentionally public demo credentials for fictional data.
 You can download sample PDFs from the demo upload portal. To generate the same samples as local files, open a **second PowerShell terminal** in the project root and run:
 
 ```powershell
-npm run samples
+npm.cmd run samples
 ```
 
 The files appear in **`output/sample-documents`**.
@@ -80,7 +84,7 @@ The files appear in **`output/sample-documents`**.
 Press **Ctrl+C** in the terminal running the app, then wait for it to stop. Start it again from the project root with:
 
 ```powershell
-npm run dev
+npm.cmd run dev
 ```
 
 Normal restarts retain your clients, requests, reviews, and uploaded files. Sign in again after restarting: the local session signing key changes on each run.
@@ -119,6 +123,7 @@ Run these in another terminal from the project root:
 |---|---|
 | `node` or `npm` is not recognized | Install Node.js 24.x and reopen your terminal. |
 | PowerShell says `npm.ps1` cannot run because scripts are disabled | Use `npm.cmd ci` and `npm.cmd run dev`. You can replace `npm` with `npm.cmd` in the other commands too. |
+| `npm run dev` reports `ERR_MODULE_NOT_FOUND`, including a missing `mongoose/index.js` | Follow the clean-install recovery below. Do not manually edit `node_modules` or delete the database. |
 | `npm ci` cannot find `package.json` | Run `Set-Location` from step 2, then retry. |
 | The browser cannot connect | Check that the terminal running `npm run dev` is still open and startup has finished. Use `http://localhost:5173`. |
 | Port 5173 or 3001 is already in use | Stop the previous DocChase run with Ctrl+C in its terminal. If another app uses the port, close that app before retrying. Run only one DocChase development instance against this local database. |
@@ -127,5 +132,18 @@ Run these in another terminal from the project root:
 | An uploaded invoice needs manual entry | Use a supplied sample PDF for fixture extraction, or enter the fields manually for your own document. |
 | A backend change does not appear | Stop and restart `npm run dev`. |
 | A reminder does not arrive by email | The default local setup does not deliver real email. See the deployment guide for optional mail configuration. |
+
+### Recover a missing dependency
+
+Stop any running DocChase development terminal with Ctrl+C, then run these commands one at a time from PowerShell:
+
+```powershell
+Set-Location -LiteralPath 'C:\Users\anant\Desktop\SST\Year 2\Term 5\mern_end_poject'
+npm.cmd ci
+node --input-type=module -e "import('mongoose').then(() => console.log('Mongoose is ready'))"
+npm.cmd run dev
+```
+
+Continue after `npm.cmd ci` finishes successfully. The next command should print **Mongoose is ready** before you start the app. This recovery reinstalls packages from the committed lockfile and retains `.local`, including your database and uploads.
 
 For architecture, configuration, and hosting details, see [README.md](README.md), [architecture](docs/ARCHITECTURE.md), and the [free deployment guide](docs/DEPLOYMENT.md).
