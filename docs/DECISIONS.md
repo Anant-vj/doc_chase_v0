@@ -17,3 +17,15 @@ MERN is a project decision. The university permits any stack and requires meanin
 
 ## 006 — Local development without secrets
 Provide a development command that launches an isolated local MongoDB using mongodb-memory-server with disk-backed data. This is development-only; production requires a configured MongoDB URI and private cloud storage. Local storage and manual extraction need no accounts. Never read the human's .env.
+
+## 007 — Small MongoDB leased queue instead of Agenda
+Use a narrowly scoped durable queue with atomic claims, unique extraction keys, retry backoff and stale-lease recovery. The invoice-only workflow needs one job kind, and the free host has a small CPU allocation. This avoids extra scheduler configuration while retaining a separately runnable worker. The queue protocol has integration coverage. This deliberately deviates from the master brief's Agenda preference; the university does not prescribe a scheduler.
+
+## 008 — Browser-native previews and purpose-built CSS
+Use private same-origin PDF/image previews instead of a PDF.js dependency, with an open-original fallback. CSS primitives and locally bundled fonts provide the accounting desk design without a large component framework. These replace the brief's react-pdf/Tailwind/shadcn preferences to keep the first release focused.
+
+## 009 — Honest external-delivery semantics
+Reminder uniqueness claims a database slot, not exactly-once provider delivery. Failed/unconfirmed attempts are visible; ambiguous sends are not automatically repeated. HTTPS email avoids SMTP-host restrictions. Unconfigured email explicitly reports no-send.
+
+## 010 — Summaries and cache for growth
+Overview progress uses grouped MongoDB status counts instead of a truncated list of full documents. The review worklist uses projections. Extraction caching is firm-scoped and model-scoped, and preserves the original source fields separately from reviewed edits. This avoids repeating provider calls or reusing human edits as OCR data.
