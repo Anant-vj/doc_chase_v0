@@ -1,0 +1,37 @@
+{
+  "name": "docchase",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm run build --workspace client",
+    "start": "node server/src/server.js",
+    "worker": "node server/src/worker.js",
+    "seed": "node server/scripts/seed.js",
+    "samples": "node server/scripts/sample-docs.js",
+    "lint": "eslint .",
+    "test": "node --test --test-concurrency=1 server/tests/*.test.js",
+    "check": "npm run lint && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@playwright/cli": "0.1.22",
+    "@vitejs/plugin-react": "6.1.2",
+    "eslint": "9.39.5",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.13.0",
+    "mongodb-memory-server": "11.3.0",
+    "prettier": "3.9.10",
+    "supertest": "7.3.1",
+    "vite": "8.3.4"
+  }
+}
