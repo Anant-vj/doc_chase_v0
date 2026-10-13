@@ -28,7 +28,7 @@ export function loadConfig(env = process.env) {
       .enum(["manual", "gemini", "fixture"])
       .default("manual"),
     GEMINI_API_KEY: z.string().optional(),
-    GEMINI_MODEL: z.string().default("gemini-2.5-flash"),
+    GEMINI_MODEL: z.string().default("gemini-3.5-flash-lite"),
     DAILY_EXTRACTION_LIMIT: z.coerce.number().int().positive().default(40),
     MAIL_PROVIDER: z.enum(["console", "brevo"]).default("console"),
     BREVO_API_KEY: z.string().optional(),

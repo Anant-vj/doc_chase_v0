@@ -32,7 +32,7 @@ Install Node **24.x**, then run:
 npm ci
 npm run dev
 ```
-Open **http://localhost:5173**. The first run downloads an official MongoDB binary into `.cache/mongodb-binaries` (the Windows archive is large). It starts a local single-member replica set with disk-backed data in `.local/mongo`, seeds fictional clients and starts both servers. No external accounts or API keys are needed.
+Open **http://localhost:5173**. The first run downloads an official MongoDB runtime into `.cache/mongodb-binaries`; on Windows, the helper retrieves and checks only the executable, avoiding unused debug symbols. It starts a local single-member replica set with disk-backed data in `.local/mongo`, seeds fictional clients and starts both servers. No external accounts or API keys are needed. Restart the development command after backend changes.
 
 Stop with Ctrl+C. Normal restarts retain the local data. Keep `.local` and `.cache` out of Git. A local replica set is required for atomic review/audit and upload/job transactions.
 
@@ -87,6 +87,8 @@ npm run build
 npm run check
 ```
 Unit tests cover validation, money reconciliation, financial-year duplicates, state transitions, checklist completion, quiet hours and safe CSV output. Integration tests use an actual isolated MongoDB replica set, covering auth, tenant isolation, CSRF, uploads, link scope, extraction, review, replacements, staff permissions and reminders. External services remain local adapters in these tests. CI runs checks and gitleaks.
+
+Install [Gitleaks](https://github.com/gitleaks/gitleaks) for your operating system and run `git config core.hooksPath .githooks` to enable staged secret scanning before commits. The existing workspace also has a checksum-verified local scanner in the ignored `.cache/gitleaks` directory. The hook blocks commits if no scanner is available and redacts findings.
 
 Browser QA evidence and screenshots belong in the ignored `output/playwright` directory; see [progress](PROGRESS.md) for verified results.
 
