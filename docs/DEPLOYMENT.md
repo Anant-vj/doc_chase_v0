@@ -2,6 +2,8 @@
 
 Prototype profile updated 26 October 2026. Provider limits can change; verify the dashboard before creating resources. Never choose an automatic paid upgrade. Vercel and Render are excluded by the user. See [prototype behavior and costs](PROTOTYPE.md).
 
+For account creation and every dashboard setting, follow [the step-by-step guide](DEPLOY_STEP_BY_STEP.md). **Koyeb signup eligibility is conditional:** check the organization plan before payment. Its Free instance does not by itself guarantee a zero-charge new signup. The guide explains the current billing check before any hosting activation.
+
 ## Alternatives evaluated
 | Provider | Free availability | Fit |
 |---|---|---|

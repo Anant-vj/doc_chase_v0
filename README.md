@@ -76,6 +76,8 @@ The local development command defaults to synthetic fixture extraction; other fi
 
 No hosted URL is claimed until the account-dependent deployment is actually completed. The Dockerfile supports other standard Node/container hosts without changing the application.
 
+Start with the [step-by-step deployment guide](docs/DEPLOY_STEP_BY_STEP.md), including the Koyeb account-plan check before payment. A Free instance is separate from signup eligibility.
+
 ## Demo credentials
 Synthetic demo mode only:
 

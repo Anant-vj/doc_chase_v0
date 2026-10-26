@@ -54,3 +54,9 @@
 - Published the complete existing history and prototype change 5014ebe to main at https://github.com/Anant-vj/doc_chase_v0. Verified the public API and remote branch matched the local commit. GitHub's Linux application job passed installation, lint, all 32 tests and build.
 - The initial-push secret-scanner action failed because it requested a nonexistent parent of the root commit. Replaced that action's revision-range inference with a pinned official Gitleaks 8.24.3 binary, checksum verification, redaction and an explicit complete-history scan.
 - Verified corrected GitHub run https://github.com/Anant-vj/doc_chase_v0/actions/runs/40357543238: both application and secrets jobs succeeded for 0ac3ccd. The publication checkpoint is documentation-only; staged secret scanning remains enabled. No paid infrastructure was provisioned. Next human steps are free database/storage account setup, deployment, hosted verification, demo recording and the official submission form.
+
+## Step-by-step hosting guidance and billing clarification
+- User requested instructions for all providers starting with Koyeb, and confirmed no Koyeb account has yet been created.
+- Checked current official provider documentation and found Koyeb's signup billing risk. Clarified the difference between free basic registration, organization plan eligibility and a Free web instance. No payment or hosting activation is authorized under a paid signup path.
+- Added DEPLOY_STEP_BY_STEP.md covering the account check, Atlas user/network/URI setup, private Supabase bucket and server key, Docker service settings, all environment values, private secret generation, public-origin configuration, verification and submission.
+- Linked the guide from README and existing setup/deployment docs. Instructions were checked against the Dockerfile and configuration schema. This is documentation-only; application checks remain the previously verified 32-test gate. No cloud resources were created.
