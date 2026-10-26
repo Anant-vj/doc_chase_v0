@@ -10,6 +10,7 @@ import {
   AlertCircle,
   MessageSquare,
   LoaderCircle,
+  RefreshCw,
 } from "lucide-react";
 import { api, date } from "../api";
 import {
@@ -95,7 +96,7 @@ function sendUpload(path, file, supersedes, onProgress) {
     xhr.send(body);
   });
 }
-function UploadItem({ item, documents, token, refresh }) {
+function UploadItem({ item, documents, token, refresh, maxFileSizeMb }) {
   const input = useRef(),
     replacement = useRef(),
     [entries, setEntries] = useState([]),
@@ -112,6 +113,8 @@ function UploadItem({ item, documents, token, refresh }) {
     update(entry.id, { status: "uploading", error: null, progress: 0 });
     try {
       const file = await downscale(entry.file);
+      if (file.size > maxFileSizeMb * 1024 * 1024)
+        throw new Error(`Choose a file no larger than ${maxFileSizeMb} MB.`);
       await sendUpload(
         `/portal/${token}/items/${item._id}/upload`,
         file,
@@ -265,7 +268,9 @@ function UploadItem({ item, documents, token, refresh }) {
                   ? "Add another document"
                   : "Choose a file or photo"}
             </strong>
-            <span>PDF, JPG, PNG or WebP · Up to 10 MB per file</span>
+            <span>
+              PDF, JPG, PNG or WebP · Up to {maxFileSizeMb} MB per file
+            </span>
           </button>
           {item.multiple && docs.length > 0 && !item.submittedAt && (
             <div className="portal-finish">
@@ -377,7 +382,6 @@ export function Portal() {
       queryKey: ["portal", token],
       queryFn: () => api(`/portal/${token}`),
       retry: false,
-      refetchInterval: 6000,
     });
   if (query.isPending)
     return (
@@ -408,7 +412,8 @@ export function Portal() {
         </p>
       </main>
     );
-  const { firm, client, checklist, documents, demo } = query.data;
+  const { firm, client, checklist, documents, demo, maxFileSizeMb } =
+    query.data;
   return (
     <main className="portal-page">
       <header className="portal-header">
@@ -440,6 +445,14 @@ export function Portal() {
               Private upload link
             </span>
           </div>
+          <Button
+            variant="secondary"
+            busy={query.isFetching}
+            onClick={() => query.refetch()}
+          >
+            <RefreshCw size={15} />
+            Refresh status
+          </Button>
         </div>
         {demo && (
           <div className="demo-banner">
@@ -489,6 +502,7 @@ export function Portal() {
               documents={documents}
               token={token}
               refresh={query.refetch}
+              maxFileSizeMb={maxFileSizeMb}
             />
           ))}
         </div>

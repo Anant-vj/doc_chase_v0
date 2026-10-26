@@ -77,6 +77,8 @@ The files appear in **`output/sample-documents`**.
 - Login, clients, requests, private upload links, document uploads, review, replacements, and CSV export all work locally.
 - Supplied synthetic samples have fixture extraction so you can exercise the review workflow. Other files go to manual entry; they are not sent to an AI provider by this setup.
 - Email defaults to an unconfigured local adapter, so real reminder emails are not delivered. A live mail provider is optional and configured separately.
+- Files are limited to 5 MB each, with a cumulative 100 MB upload allowance shared by the development database. Deleting files does not reset the allowance. Supplied PDFs are small enough for many demonstrations.
+- Choose the workspace Refresh icon or the portal's Refresh status button to see another person's changes. Returning to a stale browser tab also refreshes it. Idle pages make no recurring status requests.
 - The client portal is responsive. To try its phone layout on this computer, use your browser's responsive/device mode. The development server listens on this computer's loopback address, so a physical phone cannot use your computer's `localhost` URL.
 
 ## 6. Stop and restart

@@ -10,6 +10,7 @@ jobs:
     env:
       NODE_ENV: test
       MONGOMS_DOWNLOAD_DIR: .cache/mongodb-binaries
+      MONGOMS_DISABLE_POSTINSTALL: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

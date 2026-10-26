@@ -667,7 +667,7 @@ export function Dashboard() {
             </span>
             <span>
               <span className="tiny-green-dot" />
-              Updated as documents arrive
+              Refresh to see the latest updates
             </span>
           </div>
         </section>
@@ -1060,7 +1060,6 @@ export function RequestDetail() {
   const query = useQuery({
     queryKey: ["request", id],
     queryFn: () => api(`/checklists/${id}`),
-    refetchInterval: 6000,
   });
   if (query.isPending) return <Loading />;
   if (query.error)

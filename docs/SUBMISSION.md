@@ -3,7 +3,7 @@
 - Project Name: DocChase
 - Student Name: [human to fill]
 - Problem Statement: Small accounting firms spend time chasing scattered client invoices, checking incomplete documents and retyping data. DocChase organizes collection, validation, human review, follow-up and approved-data export.
-- GitHub Repository: [set after repository publication]
+- GitHub Repository: https://github.com/Anant-vj/doc_chase_v0
 - Deployed Application / Build: [set after cloud verification]
 - Demo Video: [human to record and add accessible link]
 - Tech Stack: MongoDB, Express, React, Node.js; Mongoose, Zod, Vite; optional Gemini, private storage and HTTPS email adapters.

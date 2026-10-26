@@ -25,7 +25,11 @@ export function portalRoutes(storage, config) {
   const router = Router(),
     upload = multer({
       storage: multer.memoryStorage(),
-      limits: { fileSize: 10 * 1024 * 1024, files: 1, fields: 4 },
+      limits: {
+        fileSize: config.MAX_FILE_SIZE_MB * 1024 * 1024,
+        files: 1,
+        fields: 4,
+      },
     });
   router.use(
     rateLimit({
@@ -99,6 +103,7 @@ export function portalRoutes(storage, config) {
       checklist: checklistView(req.checklist, docs),
       documents: docs,
       demo: config.DEMO_MODE,
+      maxFileSizeMb: config.MAX_FILE_SIZE_MB,
     });
   });
   router.post(

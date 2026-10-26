@@ -62,7 +62,8 @@ export function errorHandler(err, req, res, _next) {
   if (err.code === "LIMIT_FILE_SIZE") {
     status = 413;
     code = "FILE_TOO_LARGE";
-    message = "Choose a file smaller than 10 MB.";
+    message =
+      "This file is too large. Check the upload limit shown on the request.";
   } else if (err.name === "MulterError") {
     status = 400;
     code = "INVALID_UPLOAD";

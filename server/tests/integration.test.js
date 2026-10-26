@@ -126,7 +126,8 @@ test("CSRF origin and custom-header checks reject foreign writes", async () => {
 });
 test("mobile portal permits a scoped private upload and blocks corrupt or duplicate files", async () => {
   const token = url.split("/").at(-1);
-  await request(app).get(`/api/portal/${token}`).expect(200);
+  const portalConfig = await request(app).get(`/api/portal/${token}`).expect(200);
+  assert.equal(portalConfig.body.maxFileSizeMb, config.MAX_FILE_SIZE_MB);
   await request(app)
     .post(`/api/portal/${token}/items/${list.items[0]._id}/upload`)
     .set("X-DocChase", "1")
@@ -142,7 +143,7 @@ test("mobile portal permits a scoped private upload and blocks corrupt or duplic
   await request(app)
     .post(`/api/portal/${token}/items/${list.items[0]._id}/upload`)
     .set("X-DocChase", "1")
-    .attach("file", Buffer.alloc(10 * 1024 * 1024 + 1), {
+    .attach("file", Buffer.alloc(config.MAX_FILE_SIZE_MB * 1024 * 1024 + 1), {
       filename: "oversized.pdf",
       contentType: "application/pdf",
     })

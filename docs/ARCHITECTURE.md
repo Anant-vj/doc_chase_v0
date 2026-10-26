@@ -4,7 +4,7 @@
 flowchart LR
   Firm[Accountant browser] --> Web[React + Express web app]
   Client[Client phone / scoped link] --> Web
-  Cron[Authenticated scheduled POST] --> Web
+  Cron[Optional later: authenticated scheduled POST] -.-> Web
   Web --> Mongo[(MongoDB: firm data + job leases)]
   Web --> Files[Private storage adapter]
   Worker[Optional separate worker] --> Mongo
@@ -43,6 +43,7 @@ sequenceDiagram
   participant R as Reviewer
   C->>A: Scoped multipart upload
   A->>A: Check token, item, size, actual type, hash
+  A->>M: Atomically reserve cumulative upload bytes
   A->>S: Write random private object key
   A->>M: Transaction: document + job + activity + replacement
   W->>M: Atomic lease claim
@@ -65,6 +66,11 @@ sequenceDiagram
 The current queue processes one document at a time per process to fit small free instances. Atomic claims support splitting the worker later without introducing Redis. Mongo transactions require a replica set; local development uses a one-member replica set. Indexes support tenant-filtered queries, duplicate hashes, invoice lookup, token hashes and reminder uniqueness.
 
 Before large firms, add cursor pagination, projection/aggregation-based summaries, streaming file downloads and per-firm storage quotas. Apply these changes at existing module boundaries. No microservice rewrite is necessary for the coursework scale.
+
+## Submission resource profile
+The default per-file cap is 5 MB. A MongoDB infrastructure record, `UploadAllowance/application`, atomically reserves upload bytes against a cumulative 100 MB allowance shared across this deployment. Initialization includes existing document sizes; seed files use the same guard. Deletion and storage failures do not refund bytes, so repeated upload/delete cycles cannot bypass the cap. This is deliberately conservative prototype admission control, not a billing or storage-accounting system. It does not meter egress or unrelated files in the provider account.
+
+The browsers do not poll. Local actions invalidate affected queries, returning to a stale tab can refetch, and explicit Refresh controls load another person's changes. The internal job timer runs only inside the existing web process and makes no public keep-alive request. A sleeping host stops that process; pending jobs resume on wake. The submission profile uses no external cron job, no live AI key, and no real email provider. Scheduled delivery during host sleep is outside this prototype's guarantees.
 
 ## Reliability semantics
 Uploads compensate for failed database transactions by deleting the newly written file. Reviews and audit entries share a transaction. A stale review version returns 409. Checklist completion is derived from all current item documents: client notes are not waivers; multiple-file items also need explicit client completion.

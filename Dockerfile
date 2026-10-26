@@ -1,5 +1,6 @@
 FROM node:24.14.0-bookworm-slim AS build
 WORKDIR /app
+ENV MONGOMS_DISABLE_POSTINSTALL=1
 COPY package*.json ./
 COPY client/package.json ./client/
 COPY server/package.json ./server/

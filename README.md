@@ -2,6 +2,8 @@
 
 **Stop chasing clients for documents.** An invoice-first document workspace for small accounting practices.
 
+**Submission prototype:** real persisted collection, validation, review and export workflows, with deliberately small resource limits. Files are capped at 5 MB and the deployment has a cumulative 100 MB upload allowance. Pages update after your actions, when you return to a stale tab, or when you select Refresh; there is no periodic browser polling. An AI API key is optional. See [prototype behavior and costs](docs/PROTOTYPE.md).
+
 ## Problem statement
 Client invoices arrive across messages and email, often late, duplicated or incomplete. Accountants need a clear checklist, a private collection link and an efficient review process before exporting reliable data.
 
@@ -58,6 +60,8 @@ They are written to `output/sample-documents`. Sample downloads are also availab
 | DEMO_MODE | Enable synthetic samples and allow fixture extraction |
 | STORAGE_PROVIDER | `local` for development, `supabase` for production |
 | UPLOAD_DIR | Local private file directory |
+| MAX_FILE_SIZE_MB | Per-file limit, default 5 MB (maximum supported 10 MB) |
+| UPLOAD_BUDGET_MB | Cumulative deployment-wide upload allowance, default 100 MB; deletion does not refund it |
 | SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_BUCKET | Server-only access to a **private** bucket |
 | EXTRACTOR_PROVIDER | `manual`, `fixture` (demo only) or `gemini` |
 | GEMINI_API_KEY, GEMINI_MODEL | Optional extraction credentials and model |
@@ -68,7 +72,7 @@ They are written to `output/sample-documents`. Sample downloads are also availab
 The local development command defaults to synthetic fixture extraction; other files go to manual entry. It never pretends an unknown document was extracted. Automatic extraction failures remain reviewable.
 
 ## Deployment
-**Vercel and Render are excluded. Hosting must remain strictly free.** The prepared primary path is Koyeb Free + Atlas Free + a private Supabase Storage bucket. An authenticated cron-job.org request runs reminder dispatch even when the web process has been sleeping. Oracle Always Free VM is a documented alternative. See [free deployment guide](docs/DEPLOYMENT.md).
+**Vercel and Render are excluded. Hosting must remain strictly free.** The prepared prototype path is Koyeb Free + Atlas Free + a private Supabase Storage bucket on the Free plan. The submission profile uses sample extraction/manual entry, no real email provider, and no recurring external scheduler or keep-alive requests. Sleeping and a cold start are acceptable for this prototype. See the [free deployment guide](docs/DEPLOYMENT.md).
 
 No hosted URL is claimed until the account-dependent deployment is actually completed. The Dockerfile supports other standard Node/container hosts without changing the application.
 
@@ -106,8 +110,9 @@ This application was implemented from scratch with AI assistance for engineering
 
 ## Limitations and roadmap
 - Invoice extraction only; no bank/receipt extraction, payments, chat, template builder or Tally XML.
-- Worklists are bounded to keep the student deployment responsive; introduce indexed cursor pagination before handling large firms. File contents are loaded into memory under a 10 MB cap; replace this with streaming when required.
-- Free hosts have sleep, quota and inactivity limits; delivery timing depends on the external scheduler and provider availability.
+- Worklists are bounded to keep the student deployment responsive; introduce indexed cursor pagination before handling large firms. File contents are loaded into memory under the default 5 MB cap; replace this with streaming when required.
+- Free hosts have sleep, quota and inactivity limits. The prototype has no external scheduler and does not promise unattended reminder delivery while the host is asleep. The optional email adapter is unconfigured by default.
+- The 100 MB allowance is cumulative per database across all firms, includes seed documents, and is not refunded on deletion or failed/ambiguous storage attempts. Existing document sizes initialize the allowance on upgrade. It does not meter download bandwidth or other applications sharing your provider account.
 - Reminder logs claim each slot once. Unconfirmed email delivery is flagged rather than blindly retried; an interrupted send may need provider reconciliation.
 - No password recovery or self-service password changes in the first release. Public demo users are synthetic; this is not yet a production service for real financial documents.
 - Account setup, a live provider verification, demo recording and submission remain human-dependent deliverables.

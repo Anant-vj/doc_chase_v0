@@ -673,10 +673,6 @@ export function ReviewPage() {
     query = useQuery({
       queryKey: ["document", id],
       queryFn: () => api(`/documents/${id}`),
-      refetchInterval: (data) =>
-        ["queued", "processing"].includes(data.state.data?.document.status)
-          ? 3000
-          : false,
     });
   if (query.isPending) return <Loading />;
   if (query.error)
@@ -685,8 +681,12 @@ export function ReviewPage() {
     return (
       <Empty
         title="This document is being checked"
-        description="The details will appear here as soon as extraction finishes."
-      />
+        description="Check again in a moment to load the invoice details."
+      >
+        <Button busy={query.isFetching} onClick={() => query.refetch()}>
+          Check again
+        </Button>
+      </Empty>
     );
   return (
     <ReviewEditor

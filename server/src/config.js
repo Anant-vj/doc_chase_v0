@@ -21,6 +21,8 @@ export function loadConfig(env = process.env) {
       .transform((v) => v === "true"),
     STORAGE_PROVIDER: z.enum(["local", "supabase"]).default("local"),
     UPLOAD_DIR: z.string().default(".local/uploads"),
+    MAX_FILE_SIZE_MB: z.coerce.number().int().min(1).max(10).default(5),
+    UPLOAD_BUDGET_MB: z.coerce.number().int().positive().default(100),
     SUPABASE_URL: z.string().optional(),
     SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
     SUPABASE_BUCKET: z.string().default("docchase-private"),

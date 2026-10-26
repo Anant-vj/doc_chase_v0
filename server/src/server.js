@@ -3,8 +3,10 @@ import { loadConfig } from "./config.js";
 import { connectDatabase } from "./models.js";
 import { createApp } from "./app.js";
 import { logger } from "./errors.js";
+import { seedDemo } from "../scripts/seed.js";
 const config = loadConfig();
 await connectDatabase(config.MONGODB_URI);
+if (config.DEMO_MODE) await seedDemo(config);
 const { app, runner, reminders } = createApp(config);
 const server = app.listen(config.PORT, "0.0.0.0", () =>
   logger.info({ port: config.PORT }, "DocChase is ready"),

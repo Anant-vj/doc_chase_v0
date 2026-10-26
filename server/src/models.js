@@ -215,15 +215,31 @@ export const Usage = define(
   new Schema({ ...tenant, day: String, count: { type: Number, default: 0 } }),
 );
 Usage.schema.index({ firmId: 1, day: 1 }, { unique: true });
+// Infrastructure allowance shared by this deployment, not a tenant resource.
+export const UploadAllowance = define(
+  "UploadAllowance",
+  new Schema({
+    _id: String,
+    consumedBytes: { type: Number, required: true, min: 0 },
+  }),
+);
 export async function connectDatabase(uri) {
   await mongoose.connect(uri, {
     serverSelectionTimeoutMS: 5000,
     maxPoolSize: 10,
   });
   await Promise.all(
-    [Client, User, Document, MagicLink, Reminder, Job, Checklist, Usage].map(
-      (m) => m.init(),
-    ),
+    [
+      Client,
+      User,
+      Document,
+      MagicLink,
+      Reminder,
+      Job,
+      Checklist,
+      Usage,
+      UploadAllowance,
+    ].map((m) => m.init()),
   );
 }
 export async function audit(actor, action, entity, before, after) {

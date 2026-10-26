@@ -27,6 +27,7 @@ import {
   ArrowUpRight,
   Menu,
   X,
+  RefreshCw,
 } from "lucide-react";
 import { api, initials } from "./api";
 import { ToastProvider, Logo, Avatar, Loading, ErrorNotice } from "./ui";
@@ -48,6 +49,8 @@ const queryClient = new QueryClient({
       retry: (count, error) =>
         error.status !== 401 && error.status !== 404 && count < 1,
       refetchOnWindowFocus: true,
+      refetchInterval: false,
+      refetchIntervalInBackground: false,
       staleTime: 15000,
     },
   },
@@ -71,11 +74,11 @@ function Layout() {
     navigate = useNavigate(),
     location = useLocation();
   const [mobile, setMobile] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
   const overview = useQuery({
     queryKey: ["overview"],
     queryFn: () => api("/overview"),
     enabled: !!session.data,
-    refetchInterval: 12000,
   });
   if (session.isPending) return <Loading />;
   if (session.error?.status === 401) return <Navigate to="/login" replace />;
@@ -178,6 +181,22 @@ function Layout() {
             </span>
           </div>
           <div className="topbar-right">
+            <button
+              className="icon-button"
+              aria-label="Refresh workspace"
+              title="Refresh workspace to see the latest client updates"
+              disabled={refreshing}
+              onClick={async () => {
+                setRefreshing(true);
+                try {
+                  await queryClient.invalidateQueries();
+                } finally {
+                  setRefreshing(false);
+                }
+              }}
+            >
+              <RefreshCw size={18} className={refreshing ? "spin" : ""} />
+            </button>
             <span className="workspace-health">
               <span />
               Your documents, in order
