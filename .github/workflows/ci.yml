@@ -29,6 +29,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Scan complete Git history
+        shell: bash
+        run: |
+          set -euo pipefail
+          gitleaks_version=8.24.3
+          scan_dir="$RUNNER_TEMP/docchase-gitleaks"
+          archive="gitleaks_${gitleaks_version}_linux_x64.tar.gz"
+          checksums="gitleaks_${gitleaks_version}_checksums.txt"
+          release="https://github.com/gitleaks/gitleaks/releases/download/v${gitleaks_version}"
+          mkdir -p "$scan_dir"
+          curl --retry 3 --fail --silent --show-error --location "$release/$archive" --output "$scan_dir/$archive"
+          curl --retry 3 --fail --silent --show-error --location "$release/$checksums" --output "$scan_dir/$checksums"
+          (
+            cd "$scan_dir"
+            sha256sum --check --ignore-missing "$checksums"
+          )
+          tar -xzf "$scan_dir/$archive" -C "$scan_dir" gitleaks
+          "$scan_dir/gitleaks" git . --redact=100 --no-banner --log-opts=--all

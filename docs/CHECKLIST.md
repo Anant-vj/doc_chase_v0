@@ -6,7 +6,7 @@
 - [x] Meaningful engineering logic: validation, lifecycle, transactions, token scope, reminder slots.
 - [ ] Important failures handled: tested core failure paths; complete deployed provider checks.
 - [x] No secrets exposed: placeholders only; redacted Gitleaks scan passed and staged scanning enabled.
-- [ ] Source code accessible: local Git exists; public repository still required.
+- [x] Source code accessible: published with existing history at https://github.com/Anant-vj/doc_chase_v0.
 - [x] Git history demonstrates development: scope, tooling, persistence, uploads, extraction, review, UI, documentation and hardening have separate commits.
 - [x] README explains project: README.md.
 - [x] Architecture documented: ARCHITECTURE.md and DECISIONS.md.
