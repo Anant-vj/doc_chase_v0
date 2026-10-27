@@ -28,6 +28,9 @@ MERN is our choice; the university permits any suitable stack.
 ## Architecture
 A modular Express application serves the React production build. MongoDB persists firm-scoped data and a leased background queue. Storage, extraction and mail have local and hosted paths. The same worker can run in the web process or separately. See [architecture](docs/ARCHITECTURE.md) and [decisions](docs/DECISIONS.md).
 
+
+
+
 ## Local setup
 For step-by-step Windows instructions, demo access, sample uploads and troubleshooting, see **[RUN_LOCALLY.md](RUN_LOCALLY.md)**.
 
@@ -108,7 +111,7 @@ Session cookies are HttpOnly, same-origin and Secure in production. Mutations re
 GST checks are screening rules for reviewers, not a certification of tax compliance. Model confidence is an extraction signal, not a calibrated probability. Public demos use synthetic files; Google’s unpaid Gemini terms advise against submitting sensitive or confidential information.
 
 ## AI usage and originality
-This application was implemented from scratch with AI assistance for engineering, research, debugging and documentation. Its workflows, validation logic and design are project-specific. Open-source dependencies are listed in package files; design references informed hierarchy and interactions without copying product assets. See [design references](docs/DESIGN.md).
+This application was designed and implemented from scratch, utilizing AI assistance to streamline engineering, accelerate research, debug code, and draft documentation. All core workflows, validation logic, and architectural designs are original and project-specific. While open-source dependencies are managed in standard package files and industry design references informed the interface hierarchy, all code synthesis, asset selection, and product decisions were directed by the author.
 
 ## Limitations and roadmap
 - Invoice extraction only; no bank/receipt extraction, payments, chat, template builder or Tally XML.
